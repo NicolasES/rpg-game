@@ -1,0 +1,19 @@
+services:
+  backend:
+    build:
+      context: .
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    command: sleep infinity
+    # environment:
+    #   - NODE_ENV=development
+    #   - PORT=3000
+    #   - DB_HOST=db
+    #   - DB_PORT=5432
+    #   - DB_USER=postgres
+    #   - DB_PASSWORD=123456
+    #   - DB_NAME=app
+      
