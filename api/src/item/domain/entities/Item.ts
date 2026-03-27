@@ -5,15 +5,15 @@ interface ItemProps {
 
 export class Item {
     readonly id?: string;
-    private _name: string;
+    private name: string;
 
     constructor({ id, name }: ItemProps) {
         this.id = id;
         this.setName(name);
     }
 
-    get name(): string {
-        return this._name;
+    getName(): string {
+        return this.name;
     }
 
     setName(name: string) {
@@ -21,6 +21,6 @@ export class Item {
             throw new Error('Name is required');
         }
 
-        this._name = name;
+        this.name = name;
     }
 }

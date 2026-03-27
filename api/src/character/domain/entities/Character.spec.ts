@@ -14,7 +14,7 @@ describe('Character Entity', () => {
         const character = new Character(props);
 
         expect(character.id).toBe(props.id);
-        expect(character.name).toBe(props.name);
+        expect(character.getName()).toBe(props.name);
     });
 
     it('should create a character without an optional id', () => {
@@ -24,7 +24,7 @@ describe('Character Entity', () => {
         const character = new Character(props);
 
         expect(character.id).toBeUndefined();
-        expect(character.name).toBe(props.name);
+        expect(character.getName()).toBe(props.name);
     });
 
     it('should allow updating the name', () => {
@@ -33,6 +33,6 @@ describe('Character Entity', () => {
 
         character.setName(newName);
 
-        expect(character.name).toBe(newName);
+        expect(character.getName()).toBe(newName);
     });
 });

@@ -14,7 +14,7 @@ describe('Item Entity', () => {
         const item = new Item(props);
 
         expect(item.id).toBe(props.id);
-        expect(item.name).toBe(props.name);
+        expect(item.getName()).toBe(props.name);
     });
 
     it('should create an item without an optional id', () => {
@@ -24,7 +24,7 @@ describe('Item Entity', () => {
         const item = new Item(props);
 
         expect(item.id).toBeUndefined();
-        expect(item.name).toBe(props.name);
+        expect(item.getName()).toBe(props.name);
     });
 
     it('should allow updating the name', () => {
@@ -33,6 +33,6 @@ describe('Item Entity', () => {
 
         item.setName(newName);
 
-        expect(item.name).toBe(newName);
+        expect(item.getName()).toBe(newName);
     });
 });
