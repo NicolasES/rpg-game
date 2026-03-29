@@ -27,6 +27,10 @@ export class Character implements HasAttributes {
         this.setAttributes(attributes);
     }
 
+    getId(): string | undefined {
+        return this.id;
+    }
+
     getName(): string {
         return this.name;
     }
@@ -39,8 +43,16 @@ export class Character implements HasAttributes {
         this.name = name;
     }
 
+    getRace(): Race {
+        return this.race;
+    }
+    
     setRace(race: Race): void {
         this.race = race;
+    }
+    
+    getCharacterClass(): CharacterClass {
+        return this.characterClass;
     }
 
     setCharacterClass(characterClass: CharacterClass): void {

@@ -41,8 +41,10 @@ describe('Character Entity', () => {
         };
         const character = new Character(props);
 
-        expect(character.id).toBe(props.id);
+        expect(character.getId()).toBe(props.id);
         expect(character.getName()).toBe(props.name);
+        expect(character.getRace()).toBe(mockRace);
+        expect(character.getCharacterClass()).toBe(mockClass);
     });
 
     it('should allow getting total attribute bonus (base + race + class)', () => {
