@@ -1,11 +1,17 @@
 import { Character } from './Character';
 import { Race } from './Race';
+import { CharacterClass } from './CharacterClass';
 import { Attribute } from '@/shared/domain/enums/AttributesEnum';
 
 describe('Character Entity', () => {
     const mockRace = new Race({ 
         name: 'Human', 
         attributes: { [Attribute.STRENGTH]: 1 }
+    });
+
+    const mockClass = new CharacterClass({
+        name: 'Warrior',
+        attributes: { [Attribute.STRENGTH]: 2 }
     });
     
     const defaultAttributes = {
@@ -19,7 +25,8 @@ describe('Character Entity', () => {
         const character = new Character({ 
             name: 'Gandalf', 
             attributes: defaultAttributes,
-            race: mockRace
+            race: mockRace,
+            characterClass: mockClass
         });
         expect(character).toBeDefined();
     });
@@ -29,7 +36,8 @@ describe('Character Entity', () => {
             id: '123',
             name: 'Frodo Baggins',
             attributes: defaultAttributes,
-            race: mockRace
+            race: mockRace,
+            characterClass: mockClass
         };
         const character = new Character(props);
 
@@ -37,21 +45,24 @@ describe('Character Entity', () => {
         expect(character.getName()).toBe(props.name);
     });
 
-    it('should allow getting total attribute bonus (base + race)', () => {
+    it('should allow getting total attribute bonus (base + race + class)', () => {
         const character = new Character({ 
             name: 'Gimli', 
             attributes: { [Attribute.STRENGTH]: 3 },
-            race: mockRace // mockRace has STR +1
+            race: mockRace, // STR +1
+            characterClass: mockClass // STR +2
         });
 
-        expect(character.getAttributeBonus(Attribute.STRENGTH)).toBe(4);
+        // 3 + 1 + 2 = 6
+        expect(character.getAttributeBonus(Attribute.STRENGTH)).toBe(6);
     });
 
     it('should allow updating the name', () => {
         const character = new Character({ 
             name: 'Gimli', 
             attributes: defaultAttributes,
-            race: mockRace 
+            race: mockRace,
+            characterClass: mockClass
         });
         const newName = 'Gimli, Son of Glóin';
 

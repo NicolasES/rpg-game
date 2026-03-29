@@ -1,12 +1,14 @@
 import { Attribute, AttributeValues } from "@/shared/domain/enums/AttributesEnum";
 import { HasAttributes } from "@/shared/domain/interfaces/HasAttributes";
 import { Race } from "./Race";
+import { CharacterClass } from "./CharacterClass";
 
 interface CharacterProps {
     id?: string;
     name: string;
     attributes: AttributeValues;
     race: Race;
+    characterClass: CharacterClass;
 }
 
 export class Character implements HasAttributes {
@@ -15,11 +17,13 @@ export class Character implements HasAttributes {
     private name: string;
     private attributes: Map<Attribute, number> = new Map();
     private race: Race;
+    private characterClass: CharacterClass;
 
-    constructor({ id, name, attributes, race }: CharacterProps) {
+    constructor({ id, name, attributes, race, characterClass }: CharacterProps) {
         this.id = id;
         this.setName(name);
         this.setRace(race);
+        this.setCharacterClass(characterClass);
         this.setAttributes(attributes);
     }
 
@@ -39,6 +43,10 @@ export class Character implements HasAttributes {
         this.race = race;
     }
 
+    setCharacterClass(characterClass: CharacterClass): void {
+        this.characterClass = characterClass;
+    }
+
     setAttributes(attributes: AttributeValues): void {
         for (const [attr, value] of Object.entries(attributes)) {
             if (value !== undefined) {
@@ -48,6 +56,8 @@ export class Character implements HasAttributes {
     }
 
     getAttributeBonus(attribute: Attribute): number {
-        return (this.attributes.get(attribute) || 0) + this.race.getAttributeBonus(attribute);
+        return (this.attributes.get(attribute) || 0)
+            + this.race.getAttributeBonus(attribute)
+            + this.characterClass.getAttributeBonus(attribute);
     }
 }
