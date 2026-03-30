@@ -2,12 +2,18 @@ import { Attribute, AttributeValues } from "@/shared/domain/enums/AttributesEnum
 import { HasAttributes } from "@/shared/domain/interfaces/HasAttributes";
 
 export class Race implements HasAttributes {
+    private id?: string;
     private name: string;
     private attributes: Map<Attribute, number> = new Map();
 
-    constructor({ name, attributes }: { name: string, attributes: AttributeValues }) {
+    constructor({ id, name, attributes }: { id?: string; name: string, attributes: AttributeValues }) {
+        this.id = id;
         this.name = name;
         this.setAttributes(attributes);
+    }
+
+    getId(): string | undefined {
+        return this.id;
     }
 
     getName(): string {
