@@ -1,4 +1,4 @@
-import { Character } from "../entities/Character";
+import { Character } from "@/character/domain/entities/Character";
 
 export interface CharacterRepository {
     save(character: Character): Promise<void>;

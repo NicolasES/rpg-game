@@ -1,16 +1,15 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { randomUUID } from "node:crypto";
 import { AttributeValues } from "@/shared/domain/enums/AttributesEnum";
 import { Character } from "@/character/domain/entities/Character";
-import { Race } from "@/character/domain/entities/Race";
-import { CharacterClass } from "@/character/domain/entities/CharacterClass";
 import type { CharacterRepository } from "@/character/domain/repositories/CharacterRepository";
+import type { RaceRepository } from "@/character/domain/repositories/RaceRepository";
+import type { CharacterClassRepository } from "@/character/domain/repositories/CharacterClassRepository";
 
 export type CreateCharacterInput = {
     name: string;
     attributes: AttributeValues;
-    race: Race;
-    characterClass: CharacterClass;
+    raceId: string;
+    characterClassId: string;
 }
 
 export type CreateCharacterOutput = {
@@ -21,20 +20,31 @@ export type CreateCharacterOutput = {
 }
 
 @Injectable()
-export class CreateCharacterUseCase {
+export class CreateCharacter {
     constructor(
         @Inject('CharacterRepository')
-        private readonly characterRepository: CharacterRepository
+        private readonly characterRepository: CharacterRepository,
+        @Inject('RaceRepository')
+        private readonly raceRepository: RaceRepository,
+        @Inject('CharacterClassRepository')
+        private readonly characterClassRepository: CharacterClassRepository
     ) {}
 
     async execute(input: CreateCharacterInput): Promise<CreateCharacterOutput> {
+        const race = await this.raceRepository.findById(input.raceId);
+        if (!race) {
+            throw new Error('Race not found');
+        }
+        const characterClass = await this.characterClassRepository.findById(input.characterClassId);
+        if (!characterClass) {
+            throw new Error('Character class not found');
+        }
         const character = new Character({
             name: input.name,
             attributes: input.attributes,
-            race: input.race,
-            characterClass: input.characterClass,
+            race,
+            characterClass,
         });
-
         await this.characterRepository.save(character);
 
         return {
