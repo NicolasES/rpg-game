@@ -3,6 +3,7 @@ import { CreateCharacter, CreateCharacterInput } from './CreateCharacter';
 import { Race } from '@/character/domain/entities/Race';
 import { CharacterClass } from '@/character/domain/entities/CharacterClass';
 import { Attribute } from '@/shared/domain/enums/AttributesEnum';
+import { Character } from '@/character/domain/entities/Character';
 
 describe('CreateCharacterUseCase', () => {
     let useCase: CreateCharacter;

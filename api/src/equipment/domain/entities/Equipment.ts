@@ -1,4 +1,4 @@
-import { EquipmentSlot } from "../enums/EquipmentSlot";
+import { EquipmentSlot } from "@/equipment/domain/enums/EquipmentSlot";
 
 export class Equipment {
 
@@ -14,15 +14,15 @@ export class Equipment {
   equip(
     slot: EquipmentSlot,
     itemId: string
-  ) {
+  ): void {
     this.slots.set(slot, itemId);
   }
 
-  unequip(slot: EquipmentSlot) {
+  unequip(slot: EquipmentSlot): void {
     this.slots.delete(slot);
   }
 
-  get(slot: EquipmentSlot) {
+  get(slot: EquipmentSlot): string | undefined {
     return this.slots.get(slot);
   }
 }
