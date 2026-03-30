@@ -1,0 +1,152 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum DamageType {
+  PHYSICAL
+  FIRE
+  ICE
+  LIGHTNING
+  POISON
+  HOLY
+  DARK
+}
+
+model Character {
+  id               Int            @id @default(autoincrement())
+  name             String
+
+  // Attributes
+  strength         Int            @default(0) @map("str")
+  dexterity        Int            @default(0) @map("dex")
+  constitution     Int            @default(0) @map("con")
+  magic            Int            @default(0) @map("mag")
+
+  // Relations
+  raceId           Int            @map("race_id")
+  race             Race           @relation(fields: [raceId], references: [id])
+
+  characterClassId Int            @map("character_class_id")
+  characterClass   CharacterClass @relation(fields: [characterClassId], references: [id])
+
+  equipment        Equipment?
+
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  @@map("characters")
+}
+
+model Race {
+  id           Int         @id @default(autoincrement())
+  name         String      @unique
+
+  // Attributes
+  strength     Int         @default(0) @map("str")
+  dexterity    Int         @default(0) @map("dex")
+  constitution Int         @default(0) @map("con")
+  magic        Int         @default(0) @map("mag")
+
+  characters   Character[]
+
+  @@map("races")
+}
+
+model CharacterClass {
+  id           Int         @id @default(autoincrement())
+  name         String      @unique
+
+  // Attributes
+  strength     Int         @default(0) @map("str")
+  dexterity    Int         @default(0) @map("dex")
+  constitution Int         @default(0) @map("con")
+  magic        Int         @default(0) @map("mag")
+
+  characters   Character[]
+
+  @@map("character_classes")
+}
+
+model Equipment {
+  id          Int       @id @default(autoincrement())
+
+  characterId Int       @unique @map("character_id")
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  // Equipment Slots
+  mainHandId  Int?      @unique @map("main_hand_id")
+  mainHand    Item?     @relation("MainHand", fields: [mainHandId], references: [id])
+
+  offHandId   Int?      @unique @map("off_hand_id")
+  offHand     Item?     @relation("OffHand", fields: [offHandId], references: [id])
+
+  armorId     Int?      @unique @map("armor_id")
+  armor       Item?     @relation("Armor", fields: [armorId], references: [id])
+
+  ringId      Int?      @unique @map("ring_id")
+  ring        Item?     @relation("Ring", fields: [ringId], references: [id])
+
+  legsId      Int?      @unique @map("legs_id")
+  legs        Item?     @relation("Legs", fields: [legsId], references: [id])
+
+  @@map("equipments")
+}
+
+model ItemType {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+
+  items Item[]
+
+  @@map("item_types")
+}
+
+model Item {
+  id           Int        @id @default(autoincrement())
+  name         String
+
+  typeId       Int        @map("type_id")
+  type         ItemType   @relation(fields: [typeId], references: [id])
+
+  // Attribute bonuses granted by this item
+  strength     Int        @default(0) @map("str")
+  dexterity    Int        @default(0) @map("dex")
+  constitution Int        @default(0) @map("con")
+  magic        Int        @default(0) @map("mag")
+
+  // Multiple damage entries (e.g. 20-30 PHYSICAL + 15-20 FIRE)
+  damages      ItemDamage[]
+
+  // Reverse relations for Equipment slots
+  equippedMainHand Equipment? @relation("MainHand")
+  equippedOffHand  Equipment? @relation("OffHand")
+  equippedArmor    Equipment? @relation("Armor")
+  equippedRing     Equipment? @relation("Ring")
+  equippedLegs     Equipment? @relation("Legs")
+
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  @@map("items")
+}
+
+model ItemDamage {
+  id         Int        @id @default(autoincrement())
+
+  itemId     Int        @map("item_id")
+  item       Item       @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  damageType DamageType @map("damage_type")
+  minDamage  Int        @map("min_damage")
+  maxDamage  Int        @map("max_damage")
+
+  @@map("item_damages")
+}
