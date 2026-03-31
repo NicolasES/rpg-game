@@ -22,7 +22,7 @@ enum DamageType {
 
 model Character {
   id               Int            @id @default(autoincrement())
-  name             String
+  name             String         @unique
 
   // Attributes
   strength         Int            @default(0) @map("str")
@@ -111,7 +111,7 @@ model ItemType {
 
 model Item {
   id           Int        @id @default(autoincrement())
-  name         String
+  name         String     @unique
 
   typeId       Int        @map("type_id")
   type         ItemType   @relation(fields: [typeId], references: [id])
