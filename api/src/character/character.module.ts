@@ -4,6 +4,7 @@ import { CreateCharacter } from './application/use-cases/CreateCharacter';
 import { PrismaCharacterRepository } from './infrastructure/repositories/PrismaCharacterRepository';
 import { PrismaRaceRepository } from './infrastructure/repositories/PrismaRaceRepository';
 import { PrismaCharacterClassRepository } from './infrastructure/repositories/PrismaCharacterClassRepository';
+import { EquipmentModule } from '@/equipment/equipment.module';
 
 @Module({
   controllers: [CharacterController],
@@ -13,6 +14,7 @@ import { PrismaCharacterClassRepository } from './infrastructure/repositories/Pr
     { provide: 'RaceRepository',           useClass: PrismaRaceRepository },
     { provide: 'CharacterClassRepository', useClass: PrismaCharacterClassRepository },
   ],
+  imports: [EquipmentModule],
 })
 export class CharacterModule {}
 

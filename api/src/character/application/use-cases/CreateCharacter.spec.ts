@@ -4,6 +4,7 @@ import { Race } from '@/character/domain/entities/Race';
 import { CharacterClass } from '@/character/domain/entities/CharacterClass';
 import { Attribute } from '@/shared/domain/enums/AttributesEnum';
 import { Character } from '@/character/domain/entities/Character';
+import { Equipment } from '@prisma/client';
 
 describe('CreateCharacterUseCase', () => {
     let useCase: CreateCharacter;
@@ -37,6 +38,15 @@ describe('CreateCharacterUseCase', () => {
                     useValue: {
                         findById: jest.fn().mockImplementation(async (id: string) => {
                             return Promise.resolve(new CharacterClass({ name: 'Warrior', attributes: {} }));
+                        }),
+                    },
+                },
+                {
+                    provide: 'EquipmentRepository',
+                    useValue: {
+                        save: jest.fn().mockImplementation(async (equipment: Equipment) => {
+                            (equipment as any).id = 'fake-id-123';
+                            return Promise.resolve();
                         }),
                     },
                 },
