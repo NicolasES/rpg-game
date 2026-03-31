@@ -72,4 +72,32 @@ describe('Character Entity', () => {
 
         expect(character.getName()).toBe(newName);
     });
+
+    it('should return the base character attribute (without bonuses)', () => {
+        const character = new Character({ 
+            name: 'Legolas', 
+            attributes: { [Attribute.DEXTERITY]: 3 },
+            race: new Race({ 
+                name: 'Elf', 
+                attributes: { [Attribute.DEXTERITY]: 2 } 
+            }),
+            characterClass: new CharacterClass({ 
+                name: 'Archer', 
+                attributes: { [Attribute.DEXTERITY]: 1 } 
+            })
+        });
+
+        expect(character.getCharacterAttribute(Attribute.DEXTERITY)).toBe(3);
+    });
+
+    it('should return 0 when an attribute is not defined for the character', () => {
+        const character = new Character({ 
+            name: 'Pippin', 
+            attributes: {},
+            race: mockRace,
+            characterClass: mockClass
+        });
+
+        expect(character.getCharacterAttribute(Attribute.MAGIC)).toBe(0);
+    });
 });

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { PrismaClient } from '../generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import { seedRaces } from './seeders/races';
 import { seedCharacterClasses } from './seeders/character-classes';
 import { seedItemTypes } from './seeders/item-types';

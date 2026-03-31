@@ -16,6 +16,7 @@ export class PrismaCharacterClassRepository implements CharacterClassRepository 
         if (!row) return null;
 
         return new CharacterClass({
+            id: row.id.toString(),
             name: row.name,
             attributes: {
                 [Attribute.STRENGTH]:     row.strength,

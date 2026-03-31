@@ -12,10 +12,10 @@ export class PrismaCharacterRepository implements CharacterRepository {
 
     async save(character: Character): Promise<void> {
         const attributes = {
-            strength:     character.getAttributeBonus(Attribute.STRENGTH),
-            dexterity:    character.getAttributeBonus(Attribute.DEXTERITY),
-            constitution: character.getAttributeBonus(Attribute.CONSTITUTION),
-            magic:        character.getAttributeBonus(Attribute.MAGIC),
+            strength:     character.getCharacterAttribute(Attribute.STRENGTH),
+            dexterity:    character.getCharacterAttribute(Attribute.DEXTERITY),
+            constitution: character.getCharacterAttribute(Attribute.CONSTITUTION),
+            magic:        character.getCharacterAttribute(Attribute.MAGIC),
         };
 
         if (character.getId()) {
@@ -38,7 +38,6 @@ export class PrismaCharacterRepository implements CharacterRepository {
                 },
             });
 
-            // Injeta o ID gerado de volta na entidade via setter
             character.setId(created.id.toString());
         }
     }

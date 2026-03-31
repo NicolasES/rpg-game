@@ -16,6 +16,7 @@ export class PrismaRaceRepository implements RaceRepository {
         if (!row) return null;
 
         return new Race({
+            id: row.id.toString(),
             name: row.name,
             attributes: {
                 [Attribute.STRENGTH]:     row.strength,

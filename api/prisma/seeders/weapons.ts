@@ -1,4 +1,4 @@
-import { PrismaClient, DamageType } from '../../generated/prisma';
+import { PrismaClient, DamageType } from '@prisma/client';
 
 /**
  * Armas iniciais do jogo.

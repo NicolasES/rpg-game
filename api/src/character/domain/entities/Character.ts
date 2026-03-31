@@ -76,4 +76,8 @@ export class Character implements HasAttributes {
             + this.race.getAttributeBonus(attribute)
             + this.characterClass.getAttributeBonus(attribute);
     }
+
+    getCharacterAttribute(attribute: Attribute): number {
+        return this.attributes.get(attribute) || 0;
+    }
 }
