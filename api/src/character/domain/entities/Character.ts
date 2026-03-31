@@ -13,7 +13,7 @@ interface CharacterProps {
 
 export class Character implements HasAttributes {
 
-    readonly id?: string;
+    private id?: string;
     private name: string;
     private attributes: Map<Attribute, number> = new Map();
     private race: Race;
@@ -29,6 +29,10 @@ export class Character implements HasAttributes {
 
     getId(): string | undefined {
         return this.id;
+    }
+
+    setId(id: string): void {
+        this.id = id;
     }
 
     getName(): string {
@@ -71,5 +75,9 @@ export class Character implements HasAttributes {
         return (this.attributes.get(attribute) || 0)
             + this.race.getAttributeBonus(attribute)
             + this.characterClass.getAttributeBonus(attribute);
+    }
+
+    getCharacterAttribute(attribute: Attribute): number {
+        return this.attributes.get(attribute) || 0;
     }
 }
