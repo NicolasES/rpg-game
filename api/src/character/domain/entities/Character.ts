@@ -80,4 +80,8 @@ export class Character implements HasAttributes {
     getCharacterAttribute(attribute: Attribute): number {
         return this.attributes.get(attribute) || 0;
     }
+
+    getAttributes(): Map<Attribute, number> {
+        return new Map(this.attributes);
+    }
 }

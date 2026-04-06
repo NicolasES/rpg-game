@@ -15,6 +15,15 @@ export class PrismaRaceRepository implements RaceRepository {
 
         if (!row) return null;
 
+        return this.mapToDomain(row);
+    }
+
+    async findAll(): Promise<Race[]> {
+        const rows = await this.prisma.race.findMany();
+        return rows.map(row => this.mapToDomain(row));
+    }
+
+    private mapToDomain(row: any): Race {
         return new Race({
             id: row.id.toString(),
             name: row.name,

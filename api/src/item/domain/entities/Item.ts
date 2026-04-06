@@ -47,4 +47,8 @@ export class Item implements HasAttributes{
             }
         }
     }
+
+    getAttributes(): Map<Attribute, number> {
+        return new Map(this.attributes);
+    }
 }

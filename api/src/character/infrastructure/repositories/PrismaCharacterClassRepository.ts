@@ -15,6 +15,15 @@ export class PrismaCharacterClassRepository implements CharacterClassRepository 
 
         if (!row) return null;
 
+        return this.mapToDomain(row);
+    }
+
+    async findAll(): Promise<CharacterClass[]> {
+        const rows = await this.prisma.characterClass.findMany();
+        return rows.map(row => this.mapToDomain(row));
+    }
+
+    private mapToDomain(row: any): CharacterClass {
         return new CharacterClass({
             id: row.id.toString(),
             name: row.name,

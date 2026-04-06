@@ -31,4 +31,8 @@ export class Race implements HasAttributes {
     getAttributeBonus(attribute: Attribute): number {
         return this.attributes.get(attribute) || 0;
     }
+
+    getAttributes(): Map<Attribute, number> {
+        return new Map(this.attributes);
+    }
 }
