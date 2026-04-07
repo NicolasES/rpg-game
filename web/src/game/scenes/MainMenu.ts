@@ -20,11 +20,15 @@ export class MainMenu extends Scene
 
         this.logo = this.add.image(512, 300, 'logo').setDepth(100);
 
-        this.title = this.add.text(512, 460, 'Main Menu', {
+        this.title = this.add.text(512, 460, 'Main Menu\n(Clique para Iniciar)', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
-        }).setOrigin(0.5).setDepth(100);
+        }).setOrigin(0.5).setDepth(100).setInteractive({ useHandCursor: true });
+
+        this.title.on('pointerdown', () => {
+            this.scene.start('CharacterCreation');
+        });
 
         EventBus.emit('current-scene-ready', this);
     }
@@ -37,7 +41,7 @@ export class MainMenu extends Scene
             this.logoTween = null;
         }
 
-        this.scene.start('Game');
+        this.scene.start('CharacterCreation');
     }
 
     moveLogo (vueCallback: ({ x, y }: { x: number, y: number }) => void)
