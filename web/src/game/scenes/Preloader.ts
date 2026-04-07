@@ -34,14 +34,35 @@ export class Preloader extends Scene
 
         this.load.image('logo', 'logo.png');
         this.load.image('star', 'star.png');
+
+        // Pré-carregamento dos spritesheets dos heróis (usado na criação de char e no jogo)
+        // Largura ajustada para 67px conforme validado para evitar drifts.
+        this.load.spritesheet('hero-warrior', 'warrior-idle.png', { frameWidth: 67, frameHeight: 86 });
+        this.load.spritesheet('hero-mage', 'mage-idle.png', { frameWidth: 67, frameHeight: 86 });
+        this.load.spritesheet('hero-archer', 'archer-idle.png', { frameWidth: 67, frameHeight: 86 });
     }
 
     create ()
     {
         //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
         //  For example, you can define global animations here, so we can use them in other scenes.
+        this.createGlobalAnimations();
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainMenu');
+    }
+
+    private createGlobalAnimations(): void {
+        const classes = ['warrior', 'mage', 'archer'];
+        classes.forEach(cls => {
+            if (!this.anims.exists(`idle-${cls}`)) {
+                this.anims.create({
+                    key: `idle-${cls}`,
+                    frames: this.anims.generateFrameNumbers(`hero-${cls}`, { start: 0, end: 3 }),
+                    frameRate: 3,
+                    repeat: -1
+                });
+            }
+        });
     }
 }

@@ -1,24 +1,7 @@
 import { Scene, GameObjects } from 'phaser';
 import { EventBus } from '../EventBus';
-
-interface CreationData {
-    races: { 
-        id: string; 
-        name: string; 
-        attributes: Record<string, number>; 
-    }[];
-    classes: { 
-        id: string; 
-        name: string; 
-        attributes: Record<string, number>; 
-    }[];
-    weapons: { 
-        name: string; 
-        type: string; 
-        minDamage: number; 
-        maxDamage: number; 
-    }[];
-}
+import { CreationData } from '../types/character.types';
+import { CharacterService } from '../services/character.service';
 
 export class CharacterCreation extends Scene {
     private apiData: CreationData;
@@ -43,12 +26,6 @@ export class CharacterCreation extends Scene {
         super('CharacterCreation');
     }
 
-    preload() {
-        // Tentando 72px sem margem. Se a imagem tem 290px, sobrariam 2px no final, o que não deve causar drift.
-        this.load.spritesheet('hero-warrior', 'assets/warrior-idle.png', { frameWidth: 67, frameHeight: 86 });
-        this.load.spritesheet('hero-mage', 'assets/mage-idle.png', { frameWidth: 67, frameHeight: 86 });
-        this.load.spritesheet('hero-archer', 'assets/archer-idle.png', { frameWidth: 67, frameHeight: 86 });
-    }
 
     async create() {
         // Exibe carregando inicial
@@ -58,8 +35,7 @@ export class CharacterCreation extends Scene {
         }).setOrigin(0.5);
 
         try {
-            const response = await fetch('http://localhost:3000/character/creation-data');
-            this.apiData = await response.json();
+            this.apiData = await CharacterService.getCreationData();
             loadingText.destroy();
             
             this.buildLayout();
@@ -119,7 +95,6 @@ export class CharacterCreation extends Scene {
         // Preview do Herói (Reposicionado para não tapar os botões)
         // setOrigin(0.5, 1) ancora o sprite pelo centro-base — padrão estável para personagens animados
         this.heroPreview = this.add.sprite(480, 270, 'hero-warrior').setScale(2).setVisible(false);
-        this.createAnimations();
 
         // Painel de Atributos
         this.buildAttributesPanel(620, 150);
@@ -137,19 +112,6 @@ export class CharacterCreation extends Scene {
         this.updateUI();
     }
 
-    private createAnimations() {
-        const classes = ['warrior', 'mage', 'archer'];
-        classes.forEach(cls => {
-            if (!this.anims.exists(`idle-${cls}`)) {
-                this.anims.create({
-                    key: `idle-${cls}`,
-                    frames: this.anims.generateFrameNumbers(`hero-${cls}`, { start: 0, end: 3 }),
-                    frameRate: 3,
-                    repeat: -1
-                });
-            }
-        });
-    }
 
     private buildAttributesPanel(x: number, y: number) {
         const bg = this.add.graphics();
@@ -306,21 +268,11 @@ export class CharacterCreation extends Scene {
         console.log('Sending to API:', body);
 
         try {
-            const res = await fetch('http://localhost:3000/character', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-
-            if (res.ok) {
-                alert('PERSONAGEM CRIADO COM SUCESSO!');
-                this.scene.start('Game');
-            } else {
-                const err = await res.json();
-                alert('ERRO: ' + (err.message || 'Falha ao criar'));
-            }
-        } catch (e) {
-            alert('ERRO DE CONEXÃO');
+            await CharacterService.createCharacter(body);
+            alert('PERSONAGEM CRIADO COM SUCESSO!');
+            this.scene.start('Game');
+        } catch (e: any) {
+            alert('ERRO: ' + (e.message || 'Falha ao se conectar com os servidores'));
         }
     }
 }
