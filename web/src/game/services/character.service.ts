@@ -1,6 +1,6 @@
 import { CreationData, CreateCharacterDto } from '../types/character.types';
 
-const API_URL = 'http://localhost:3000'; // Em produção isso deve virar uma variável de ambiente, ex: import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 export class CharacterService {
 
