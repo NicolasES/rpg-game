@@ -2,6 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CharacterController } from './character.controller';
 import { Attribute } from '@/shared/domain/enums/AttributesEnum';
 import { CreateCharacter, type CreateCharacterInput } from './application/use-cases/CreateCharacter';
+import { ListRaces } from './application/use-cases/ListRaces';
+import { ListClasses } from './application/use-cases/ListClasses';
+import { ShowInitialWeapons } from '@/item/application/use-cases/ShowInitialWeapons';
 
 describe('CharacterController', () => {
   let controller: CharacterController;
@@ -13,6 +16,24 @@ describe('CharacterController', () => {
       providers: [
         {
           provide: CreateCharacter,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
+        {
+          provide: ListRaces,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
+        {
+          provide: ListClasses,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
+        {
+          provide: ShowInitialWeapons,
           useValue: {
             execute: jest.fn(),
           },
