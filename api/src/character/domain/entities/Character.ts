@@ -64,10 +64,20 @@ export class Character implements HasAttributes {
     }
 
     setAttributes(attributes: AttributeValues): void {
-        for (const [attr, value] of Object.entries(attributes)) {
-            if (value !== undefined) {
-                this.attributes.set(attr as Attribute, value);
+        const requiredAttributes = Object.values(Attribute);
+        
+        for (const attr of requiredAttributes) {
+            const value = attributes[attr];
+            
+            if (value === undefined || value === null) {
+                throw new Error(`Attribute ${attr} is required`);
             }
+
+            if (value < 6) {
+                throw new Error(`Attribute ${attr} must be at least 6`);
+            }
+
+            this.attributes.set(attr, value);
         }
     }
 

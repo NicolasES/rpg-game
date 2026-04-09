@@ -50,13 +50,18 @@ describe('Character Entity', () => {
     it('should allow getting total attribute bonus (base + race + class)', () => {
         const character = new Character({ 
             name: 'Gimli', 
-            attributes: { [Attribute.STRENGTH]: 3 },
+            attributes: { 
+                [Attribute.STRENGTH]: 6,
+                [Attribute.DEXTERITY]: 6,
+                [Attribute.CONSTITUTION]: 6,
+                [Attribute.MAGIC]: 6
+            },
             race: mockRace, // STR +1
             characterClass: mockClass // STR +2
         });
 
-        // 3 + 1 + 2 = 6
-        expect(character.getAttributeBonus(Attribute.STRENGTH)).toBe(6);
+        // 6 + 1 + 2 = 9
+        expect(character.getAttributeBonus(Attribute.STRENGTH)).toBe(9);
     });
 
     it('should allow updating the name', () => {
@@ -76,7 +81,12 @@ describe('Character Entity', () => {
     it('should return the base character attribute (without bonuses)', () => {
         const character = new Character({ 
             name: 'Legolas', 
-            attributes: { [Attribute.DEXTERITY]: 3 },
+            attributes: { 
+                [Attribute.STRENGTH]: 6,
+                [Attribute.DEXTERITY]: 8,
+                [Attribute.CONSTITUTION]: 6,
+                [Attribute.MAGIC]: 6
+            },
             race: new Race({ 
                 name: 'Elf', 
                 attributes: { [Attribute.DEXTERITY]: 2 } 
@@ -87,17 +97,33 @@ describe('Character Entity', () => {
             })
         });
 
-        expect(character.getCharacterAttribute(Attribute.DEXTERITY)).toBe(3);
+        expect(character.getCharacterAttribute(Attribute.DEXTERITY)).toBe(8);
     });
 
-    it('should return 0 when an attribute is not defined for the character', () => {
-        const character = new Character({ 
-            name: 'Pippin', 
-            attributes: {},
-            race: mockRace,
-            characterClass: mockClass
-        });
+    it('should throw an error when an attribute is missing', () => {
+        expect(() => {
+            new Character({ 
+                name: 'Incomplete', 
+                attributes: { [Attribute.STRENGTH]: 10 },
+                race: mockRace,
+                characterClass: mockClass
+            });
+        }).toThrow('Attribute DEX is required');
+    });
 
-        expect(character.getCharacterAttribute(Attribute.MAGIC)).toBe(0);
+    it('should throw an error when an attribute is less than 6', () => {
+        expect(() => {
+            new Character({ 
+                name: 'Weakling', 
+                attributes: { 
+                    [Attribute.STRENGTH]: 5,
+                    [Attribute.DEXTERITY]: 6,
+                    [Attribute.CONSTITUTION]: 6,
+                    [Attribute.MAGIC]: 6
+                },
+                race: mockRace,
+                characterClass: mockClass
+            });
+        }).toThrow('Attribute STR must be at least 6');
     });
 });

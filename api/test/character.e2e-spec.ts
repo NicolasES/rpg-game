@@ -59,10 +59,10 @@ describe('CharacterController (e2e)', () => {
             raceId: race.id.toString(),
             characterClassId: characterClass.id.toString(),
             attributes: {
-                [Attribute.STRENGTH]: 2,
-                [Attribute.DEXTERITY]: 3,
-                [Attribute.CONSTITUTION]: 1,
-                [Attribute.MAGIC]: 0
+                [Attribute.STRENGTH]: 6,
+                [Attribute.DEXTERITY]: 7,
+                [Attribute.CONSTITUTION]: 6,
+                [Attribute.MAGIC]: 6
             },
         };
 
@@ -87,9 +87,9 @@ describe('CharacterController (e2e)', () => {
         expect(characterInDb?.name).toBe('Aragorn');
         
         // Validar os bônus acumulados (Persistência no PrismaCharacterRepository soma os bônus)
-        expect(characterInDb?.strength).toBe(2);
-        expect(characterInDb?.dexterity).toBe(3);
-        expect(characterInDb?.constitution).toBe(1);
-        expect(characterInDb?.magic).toBe(0);
+        expect(characterInDb?.strength).toBe(6);
+        expect(characterInDb?.dexterity).toBe(7);
+        expect(characterInDb?.constitution).toBe(6);
+        expect(characterInDb?.magic).toBe(6);
     });
 });

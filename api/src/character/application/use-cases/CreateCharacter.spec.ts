@@ -66,7 +66,12 @@ describe('CreateCharacterUseCase', () => {
     it('should create and save a character', async () => {
         const input: CreateCharacterInput = {
             name: 'Frodo',
-            attributes: { [Attribute.STRENGTH]: 10 },
+            attributes: { 
+                [Attribute.STRENGTH]: 10,
+                [Attribute.DEXTERITY]: 10,
+                [Attribute.CONSTITUTION]: 10,
+                [Attribute.MAGIC]: 10
+            },
             raceId: 'human-id',
             characterClassId: 'warrior-id'
         };
@@ -86,7 +91,12 @@ describe('CreateCharacterUseCase', () => {
 
         const input: CreateCharacterInput = {
             name: 'Frodo',
-            attributes: { [Attribute.STRENGTH]: 10 },
+            attributes: { 
+                [Attribute.STRENGTH]: 10,
+                [Attribute.DEXTERITY]: 10,
+                [Attribute.CONSTITUTION]: 10,
+                [Attribute.MAGIC]: 10
+            },
             raceId: 'non-existent-race',
             characterClassId: 'warrior-id'
         };
@@ -99,7 +109,12 @@ describe('CreateCharacterUseCase', () => {
 
         const input: CreateCharacterInput = {
             name: 'Frodo',
-            attributes: { [Attribute.STRENGTH]: 10 },
+            attributes: { 
+                [Attribute.STRENGTH]: 10,
+                [Attribute.DEXTERITY]: 10,
+                [Attribute.CONSTITUTION]: 10,
+                [Attribute.MAGIC]: 10
+            },
             raceId: 'human-id',
             characterClassId: 'non-existent-class'
         };
