@@ -4,12 +4,14 @@ import { seedRaces } from './seeders/races';
 import { seedCharacterClasses } from './seeders/character-classes';
 import { seedItemTypes } from './seeders/item-types';
 import { seedWeapons } from './seeders/weapons';
+import { seedMonsters } from './seeders/monsters';
+import { seedHuntingAreas } from './seeders/hunting-areas';
 
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 
 const databaseUrl = new URL(process.env.DATABASE_URL!);
 const adapter = new PrismaMariaDb({
-    host: databaseUrl.hostname,
+    host: process.env.DATABASE_HOST || databaseUrl.hostname,
     port: parseInt(databaseUrl.port, 10) || 3306,
     user: databaseUrl.username,
     password: databaseUrl.password,
@@ -25,6 +27,8 @@ async function main() {
     await seedCharacterClasses(prisma);
     await seedItemTypes(prisma);
     await seedWeapons(prisma);
+    await seedMonsters(prisma);
+    await seedHuntingAreas(prisma);
 
     console.log('\n✅ Seed completed!');
 }

@@ -38,6 +38,10 @@ model Character {
 
   equipment        Equipment?
 
+  experience       Int            @default(0)
+
+  huntingAreaProgress HuntingAreaProgress[]
+
   createdAt        DateTime       @default(now()) @map("created_at")
   updatedAt        DateTime       @updatedAt @map("updated_at")
 
@@ -148,4 +152,70 @@ model ItemDamage {
   maxDamage  Int        @map("max_damage")
 
   @@map("item_damages")
+}
+
+model HuntingArea {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+
+  levels      HuntingAreaLevel[]
+  characterProgress HuntingAreaProgress[]
+
+  @@map("hunting_areas")
+}
+
+model HuntingAreaLevel {
+  id              Int         @id @default(autoincrement())
+  huntingAreaId   Int         @map("hunting_area_id")
+  huntingArea     HuntingArea @relation(fields: [huntingAreaId], references: [id], onDelete: Cascade)
+  
+  level           Int
+  
+  monsters        HuntingAreaLevelMonster[]
+
+  @@unique([huntingAreaId, level])
+  @@map("hunting_area_levels")
+}
+
+model HuntingAreaProgress {
+  id              Int         @id @default(autoincrement())
+  characterId     Int         @map("character_id")
+  huntingAreaId   Int         @map("hunting_area_id")
+  highestLevelUnlocked Int    @default(1) @map("highest_level_unlocked")
+
+  character       Character   @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  huntingArea     HuntingArea @relation(fields: [huntingAreaId], references: [id], onDelete: Cascade)
+
+  @@unique([characterId, huntingAreaId])
+  @@map("hunting_area_progress")
+}
+
+model Monster {
+  id              Int      @id @default(autoincrement())
+  name            String   @unique
+  
+  hp              Int
+  baseExp         Int      @map("base_exp")
+
+  // Attributes
+  strength        Int      @default(6) @map("str")
+  dexterity       Int      @default(6) @map("dex")
+  constitution    Int      @default(6) @map("con")
+  magic           Int      @default(6) @map("mag")
+
+  huntingAreaLevels HuntingAreaLevelMonster[]
+
+  @@map("monsters")
+}
+
+model HuntingAreaLevelMonster {
+  huntingAreaLevelId Int @map("hunting_area_level_id")
+  huntingAreaLevel   HuntingAreaLevel @relation(fields: [huntingAreaLevelId], references: [id], onDelete: Cascade)
+
+  monsterId          Int @map("monster_id")
+  monster            Monster @relation(fields: [monsterId], references: [id], onDelete: Cascade)
+
+  @@id([huntingAreaLevelId, monsterId])
+  @@map("hunting_area_level_monsters")
 }
