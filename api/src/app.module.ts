@@ -5,9 +5,10 @@ import { CharacterModule } from './character/character.module';
 import { ItemModule } from './item/item.module';
 import { EquipmentModule } from './equipment/equipment.module';
 import { InfrastructureModule } from './shared/infrastructure/InfrastructureModule';
+import { HuntingAreaModule } from './hunting-area/hunting-area.module';
 
 @Module({
-  imports: [InfrastructureModule, CharacterModule, ItemModule, EquipmentModule],
+  imports: [InfrastructureModule, CharacterModule, ItemModule, EquipmentModule, HuntingAreaModule],
   controllers: [AppController],
   providers: [AppService],
 })
