@@ -25,6 +25,7 @@ export class PrismaCharacterRepository implements CharacterRepository {
                     name:            character.getName(),
                     raceId:          parseInt(character.getRace().getId()!),
                     characterClassId: parseInt(character.getCharacterClass().getId()!),
+                    experience:      character.getExperience(),
                     ...attributes,
                 },
             });
@@ -34,6 +35,7 @@ export class PrismaCharacterRepository implements CharacterRepository {
                     name:            character.getName(),
                     raceId:          parseInt(character.getRace().getId()!),
                     characterClassId: parseInt(character.getCharacterClass().getId()!),
+                    experience:      character.getExperience(),
                     ...attributes,
                 },
             });
@@ -56,6 +58,7 @@ export class PrismaCharacterRepository implements CharacterRepository {
         return new Character({
             id: row.id.toString(),
             name: row.name,
+            experience: row.experience,
             attributes: {
                 [Attribute.STRENGTH]:     row.strength,
                 [Attribute.DEXTERITY]:    row.dexterity,
