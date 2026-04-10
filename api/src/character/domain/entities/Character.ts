@@ -9,6 +9,7 @@ interface CharacterProps {
     attributes: AttributeValues;
     race: Race;
     characterClass: CharacterClass;
+    experience?: number;
 }
 
 export class Character implements HasAttributes {
@@ -18,13 +19,15 @@ export class Character implements HasAttributes {
     private attributes: Map<Attribute, number> = new Map();
     private race: Race;
     private characterClass: CharacterClass;
+    private experience: number;
 
-    constructor({ id, name, attributes, race, characterClass }: CharacterProps) {
+    constructor({ id, name, attributes, race, characterClass, experience = 0 }: CharacterProps) {
         this.id = id;
         this.setName(name);
         this.setRace(race);
         this.setCharacterClass(characterClass);
         this.setAttributes(attributes);
+        this.experience = experience;
     }
 
     getId(): string | undefined {
@@ -93,5 +96,15 @@ export class Character implements HasAttributes {
 
     getAttributes(): Map<Attribute, number> {
         return new Map(this.attributes);
+    }
+
+    getLevel(): number {
+        if (this.experience < 100) return 1;
+        // Formula = exp: 100 + 50 * (L - 2) * (L - 1). Inverse math gives:
+        return Math.floor((3 + Math.sqrt(1 + (this.experience - 100) / 12.5)) / 2);
+    }
+
+    getExperience(): number {
+        return this.experience;
     }
 }
