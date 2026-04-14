@@ -1,13 +1,14 @@
-import { UserRepository } from "@/account/domain/repositories/UserRepository";
-import { HashProvider } from "../providers/HashProvider";
-import { JwtProvider } from "../providers/JwtProvider";
+import { Inject } from "@nestjs/common";
+import type { UserRepository } from "@/account/domain/repositories/UserRepository";
+import type { HashProvider } from "@/account/application/providers/HashProvider";
+import type { JwtProvider } from "@/account/application/providers/JwtProvider";
 
-type Input = {
+export type SignInInput = {
     email: string;
     password: string;
 }
 
-type Output = {
+export type SignInOutput = {
     id: string;
     name: string;
     email: string;
@@ -16,12 +17,12 @@ type Output = {
 
 export class SignIn {
     constructor(
-        private readonly userRepository: UserRepository,
-        private readonly hashProvider: HashProvider,
-        private readonly jwtProvider: JwtProvider
+        @Inject('UserRepository') private readonly userRepository: UserRepository,
+        @Inject('HashProvider') private readonly hashProvider: HashProvider,
+        @Inject('JwtProvider') private readonly jwtProvider: JwtProvider
     ) {}
     
-    async execute(input: Input): Promise<Output> {
+    async execute(input: SignInInput): Promise<SignInOutput> {
         const user = await this.userRepository.findByEmail(input.email);
         if (!user) {
             throw new Error('User not found');
