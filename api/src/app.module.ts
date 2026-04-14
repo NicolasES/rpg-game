@@ -6,9 +6,10 @@ import { ItemModule } from './item/item.module';
 import { EquipmentModule } from './equipment/equipment.module';
 import { InfrastructureModule } from './shared/infrastructure/InfrastructureModule';
 import { HuntingAreaModule } from './hunting-area/hunting-area.module';
+import { AccountModule } from './account/account.module';
 
 @Module({
-  imports: [InfrastructureModule, CharacterModule, ItemModule, EquipmentModule, HuntingAreaModule],
+  imports: [InfrastructureModule, CharacterModule, ItemModule, EquipmentModule, HuntingAreaModule, AccountModule],
   controllers: [AppController],
   providers: [AppService],
 })
