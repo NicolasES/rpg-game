@@ -1,6 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CreateUser, type CreateUserInput } from './application/use-cases/CreateUser';
-import { SignIn, type SignInInput } from './application/use-cases/SignIn';
+import { CreateUser } from './application/use-cases/CreateUser';
+import { SignIn } from './application/use-cases/SignIn';
+import { CreateUserDto } from './presentation/dtos/CreateUser.dto';
+import { SignInDto } from './presentation/dtos/SignIn.dto';
 
 @Controller('account')
 export class AccountController {
@@ -10,12 +12,12 @@ export class AccountController {
     ) {}
 
     @Post('signup')
-    async createAccount(@Body() body: CreateUserInput) {
+    async createAccount(@Body() body: CreateUserDto) {
         return this.createUser.execute(body);
     }
 
     @Post('signin')
-    async authenticate(@Body() body: SignInInput) {
+    async authenticate(@Body() body: SignInDto) {
         return this.signIn.execute(body);
     }
 }
