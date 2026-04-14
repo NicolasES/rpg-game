@@ -2,14 +2,14 @@ type UserProps = {
     id?: string;
     name: string;
     email: string;
-    password: string;
+    password?: string;
 }
 
 export class User {
     private id?: string;
     private name: string;
     private email: string;
-    private password: string;
+    private password?: string;
     
     constructor(props: UserProps) {
         this.id = props.id;
@@ -30,7 +30,7 @@ export class User {
         return this.email;
     }
     
-    public getPassword(): string {
+    public getPassword(): string | undefined {
         return this.password;
     }
 }

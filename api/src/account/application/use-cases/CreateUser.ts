@@ -1,7 +1,7 @@
 import { User } from "@/account/domain/entities/User";
 import type { UserRepository } from "@/account/domain/repositories/UserRepository";
 import type { HashProvider } from "../providers/HashProvider";
-import { Inject } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 
 export type CreateUserInput = {
     name: string;
@@ -15,6 +15,7 @@ export type CreateUserOutput = {
     email: string;
 }
 
+@Injectable()
 export class CreateUser {
     constructor(
         @Inject('UserRepository') private readonly userRepository: UserRepository,

@@ -1,4 +1,4 @@
-import { Inject } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import type { UserRepository } from "@/account/domain/repositories/UserRepository";
 import type { HashProvider } from "@/account/application/providers/HashProvider";
 import type { JwtProvider } from "@/account/application/providers/JwtProvider";
@@ -15,6 +15,7 @@ export type SignInOutput = {
     token: string;
 }
 
+@Injectable()
 export class SignIn {
     constructor(
         @Inject('UserRepository') private readonly userRepository: UserRepository,
@@ -24,10 +25,10 @@ export class SignIn {
     
     async execute(input: SignInInput): Promise<SignInOutput> {
         const user = await this.userRepository.findByEmail(input.email);
-        if (!user) {
-            throw new Error('User not found');
+        if (!user || !user.getPassword()) {
+            throw new Error('User not found or invalid');
         }
-        const isPasswordValid = await this.hashProvider.compare(input.password, user.getPassword());
+        const isPasswordValid = await this.hashProvider.compare(input.password, user.getPassword() as string);
         if (!isPasswordValid) {
             throw new Error('Invalid password');
         }

@@ -8,18 +8,18 @@ export class PrismaUserRepository implements UserRepository {
     constructor(private readonly prisma: PrismaService) {}
 
     async create(user: User): Promise<User> {
+        if (!user.getPassword()) throw new Error('Password is required to create a user');
         const row = await this.prisma.user.create({
             data: {
                 name: user.getName(),
                 email: user.getEmail(),
-                password: user.getPassword(),
+                password: user.getPassword() as string,
             }
         });
         return new User({
             id: row.id.toString(),
             name: row.name,
             email: row.email,
-            password: row.password,
         });
     }
 
@@ -34,7 +34,6 @@ export class PrismaUserRepository implements UserRepository {
             id: row.id.toString(),
             name: row.name,
             email: row.email,
-            password: row.password,
         });
     }
 
