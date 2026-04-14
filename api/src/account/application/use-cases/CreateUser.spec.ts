@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUser } from './CreateUser';
 import { User } from '@/account/domain/entities/User';
+import { UserAlreadyExistsError } from '@/account/domain/errors/UserAlreadyExistsError';
 
 describe('CreateUser UseCase', () => {
     let useCase: CreateUser;
@@ -82,7 +83,7 @@ describe('CreateUser UseCase', () => {
             password: 'secretpassword',
         };
 
-        await expect(useCase.execute(input)).rejects.toThrow('User already exists');
+        await expect(useCase.execute(input)).rejects.toThrow(UserAlreadyExistsError);
         expect(userRepository.findByEmail).toHaveBeenCalledWith(input.email);
         expect(hashProvider.hash).not.toHaveBeenCalled();
         expect(userRepository.create).not.toHaveBeenCalled();

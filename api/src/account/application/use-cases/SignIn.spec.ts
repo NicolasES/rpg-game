@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignIn } from './SignIn';
 import { User } from '@/account/domain/entities/User';
+import { InvalidCredentialsError } from '@/account/domain/errors/InvalidCredentialsError';
 
 describe('SignIn UseCase', () => {
     let useCase: SignIn;
@@ -83,7 +84,7 @@ describe('SignIn UseCase', () => {
             password: 'anypassword',
         };
 
-        await expect(useCase.execute(input)).rejects.toThrow('User not found');
+        await expect(useCase.execute(input)).rejects.toThrow(InvalidCredentialsError);
         expect(userRepository.findByEmail).toHaveBeenCalledWith(input.email);
         expect(hashProvider.compare).not.toHaveBeenCalled();
         expect(jwtProvider.sign).not.toHaveBeenCalled();
@@ -104,7 +105,7 @@ describe('SignIn UseCase', () => {
             password: 'wrongpassword',
         };
 
-        await expect(useCase.execute(input)).rejects.toThrow('Invalid password');
+        await expect(useCase.execute(input)).rejects.toThrow(InvalidCredentialsError);
         expect(userRepository.findByEmail).toHaveBeenCalledWith(input.email);
         expect(hashProvider.compare).toHaveBeenCalledWith(input.password, 'hashed-password');
         expect(jwtProvider.sign).not.toHaveBeenCalled();

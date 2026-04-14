@@ -1,3 +1,6 @@
+import { InvalidNameError } from '../errors/InvalidNameError';
+import { InvalidEmailError } from '../errors/InvalidEmailError';
+
 type UserProps = {
     id?: string;
     name: string;
@@ -13,8 +16,8 @@ export class User {
     
     constructor(props: UserProps) {
         this.id = props.id;
-        this.name = props.name;
-        this.email = props.email;
+        this.setName(props.name);
+        this.setEmail(props.email);
         this.password = props.password;
     }
     
@@ -32,5 +35,20 @@ export class User {
     
     public getPassword(): string | undefined {
         return this.password;
+    }
+
+    public setName(name: string): void {
+        if (!name || name.trim().length < 3) {
+            throw new InvalidNameError();
+        }
+        this.name = name;
+    }
+
+    public setEmail(email: string): void {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+            throw new InvalidEmailError(email);
+        }
+        this.email = email;
     }
 }
