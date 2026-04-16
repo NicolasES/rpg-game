@@ -8,6 +8,7 @@ import type { EquipmentRepository } from "@/equipment/domain/repositories/Equipm
 import { Equipment } from "@/equipment/domain/entities/Equipment";
 
 export type CreateCharacterInput = {
+    userId: string;
     name: string;
     attributes: AttributeValues;
     raceId: string;
@@ -44,6 +45,7 @@ export class CreateCharacter {
             throw new Error('Character class not found');
         }
         const character = new Character({
+            userId: input.userId,
             name: input.name,
             attributes: input.attributes,
             race,

@@ -65,6 +65,7 @@ describe('CreateCharacterUseCase', () => {
 
     it('should create and save a character', async () => {
         const input: CreateCharacterInput = {
+            userId: 'user-id',
             name: 'Frodo',
             attributes: { 
                 [Attribute.STRENGTH]: 10,
@@ -90,6 +91,7 @@ describe('CreateCharacterUseCase', () => {
         raceRepository.findById.mockResolvedValueOnce(null);
 
         const input: CreateCharacterInput = {
+            userId: 'user-id',
             name: 'Frodo',
             attributes: { 
                 [Attribute.STRENGTH]: 10,
@@ -108,6 +110,7 @@ describe('CreateCharacterUseCase', () => {
         characterClassRepository.findById.mockResolvedValueOnce(null);
 
         const input: CreateCharacterInput = {
+            userId: 'user-id',
             name: 'Frodo',
             attributes: { 
                 [Attribute.STRENGTH]: 10,

@@ -23,6 +23,7 @@ describe('Character Entity', () => {
 
     it('should be defined', () => {
         const character = new Character({ 
+            userId: 'user-id',
             name: 'Gandalf', 
             attributes: defaultAttributes,
             race: mockRace,
@@ -34,6 +35,7 @@ describe('Character Entity', () => {
     it('should create a character with all properties', () => {
         const props = {
             id: '123',
+            userId: 'user-id',
             name: 'Frodo Baggins',
             attributes: defaultAttributes,
             race: mockRace,
@@ -49,6 +51,7 @@ describe('Character Entity', () => {
 
     it('should allow getting total attribute bonus (base + race + class)', () => {
         const character = new Character({ 
+            userId: 'user-id',
             name: 'Gimli', 
             attributes: { 
                 [Attribute.STRENGTH]: 6,
@@ -66,6 +69,7 @@ describe('Character Entity', () => {
 
     it('should allow updating the name', () => {
         const character = new Character({ 
+            userId: 'user-id',
             name: 'Gimli', 
             attributes: defaultAttributes,
             race: mockRace,
@@ -80,6 +84,7 @@ describe('Character Entity', () => {
 
     it('should return the base character attribute (without bonuses)', () => {
         const character = new Character({ 
+            userId: 'user-id',
             name: 'Legolas', 
             attributes: { 
                 [Attribute.STRENGTH]: 6,
@@ -103,6 +108,7 @@ describe('Character Entity', () => {
     it('should throw an error when an attribute is missing', () => {
         expect(() => {
             new Character({ 
+                userId: 'user-id',
                 name: 'Incomplete', 
                 attributes: { [Attribute.STRENGTH]: 10 },
                 race: mockRace,
@@ -114,6 +120,7 @@ describe('Character Entity', () => {
     it('should throw an error when an attribute is less than 6', () => {
         expect(() => {
             new Character({ 
+                userId: 'user-id',
                 name: 'Weakling', 
                 attributes: { 
                     [Attribute.STRENGTH]: 5,
@@ -129,6 +136,7 @@ describe('Character Entity', () => {
     
     it('should calculate the level correctly based on experience formula', () => {
         const characterStart = new Character({ 
+            userId: 'user-id',
             name: 'Noob', 
             attributes: defaultAttributes,
             race: mockRace,
@@ -138,6 +146,7 @@ describe('Character Entity', () => {
         expect(characterStart.getLevel()).toBe(1);
 
         const characterLvl2 = new Character({ 
+            userId: 'user-id',
             name: 'Fighter', 
             attributes: defaultAttributes,
             race: mockRace,
@@ -147,6 +156,7 @@ describe('Character Entity', () => {
         expect(characterLvl2.getLevel()).toBe(2);
 
         const characterLvl3 = new Character({ 
+            userId: 'user-id',
             name: 'Fighter', 
             attributes: defaultAttributes,
             race: mockRace,
@@ -156,6 +166,7 @@ describe('Character Entity', () => {
         expect(characterLvl3.getLevel()).toBe(3);
 
         const characterLvl4 = new Character({ 
+            userId: 'user-id',
             name: 'Fighter', 
             attributes: defaultAttributes,
             race: mockRace,
@@ -167,6 +178,7 @@ describe('Character Entity', () => {
 
     it('should match the exact experience progression described in requirements', () => {
         const testCharacter = (exp: number) => new Character({ 
+            userId: 'user-id',
             name: 'Tester', attributes: defaultAttributes,
             race: mockRace, characterClass: mockClass, experience: exp
         }).getLevel();

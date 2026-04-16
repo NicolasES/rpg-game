@@ -5,6 +5,8 @@ import { CreateCharacter, type CreateCharacterInput } from './application/use-ca
 import { ListRaces } from './application/use-cases/ListRaces';
 import { ListClasses } from './application/use-cases/ListClasses';
 import { ShowInitialWeapons } from '@/item/application/use-cases/ShowInitialWeapons';
+import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from '@/shared/infrastructure/auth/AuthGuard';
 
 describe('CharacterController', () => {
   let controller: CharacterController;
@@ -38,6 +40,13 @@ describe('CharacterController', () => {
             execute: jest.fn(),
           },
         },
+        {
+          provide: JwtService,
+          useValue: {
+            verifyAsync: jest.fn(),
+          },
+        },
+        AuthGuard,
       ],
     }).compile();
 
@@ -54,7 +63,8 @@ describe('CharacterController', () => {
   });
 
   it('should call CreateCharacter.execute with correct parameters and return the result', async () => {
-    const mockInput: CreateCharacterInput = {
+    const mockUser = { id: 'user-123', name: 'User Test', email: 'test@test.com' };
+    const mockBody = {
       name: 'Legolas',
       attributes: {
         [Attribute.STRENGTH]: 10,
@@ -75,10 +85,13 @@ describe('CharacterController', () => {
 
     jest.spyOn(createCharacter, 'execute').mockResolvedValue(mockOutput);
 
-    const result = await controller.create(mockInput);
+    const result = await controller.create(mockBody, mockUser);
 
     expect(createCharacter.execute).toHaveBeenCalledTimes(1);
-    expect(createCharacter.execute).toHaveBeenCalledWith(mockInput);
+    expect(createCharacter.execute).toHaveBeenCalledWith({
+      ...mockBody,
+      userId: mockUser.id
+    });
     expect(result).toEqual(mockOutput);
   });
 });

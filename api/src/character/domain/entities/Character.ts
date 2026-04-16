@@ -5,6 +5,7 @@ import { CharacterClass } from "./CharacterClass";
 
 interface CharacterProps {
     id?: string;
+    userId: string;
     name: string;
     attributes: AttributeValues;
     race: Race;
@@ -15,14 +16,16 @@ interface CharacterProps {
 export class Character implements HasAttributes {
 
     private id?: string;
+    private userId: string;
     private name: string;
     private attributes: Map<Attribute, number> = new Map();
     private race: Race;
     private characterClass: CharacterClass;
     private experience: number;
 
-    constructor({ id, name, attributes, race, characterClass, experience = 0 }: CharacterProps) {
+    constructor({ id, userId, name, attributes, race, characterClass, experience = 0 }: CharacterProps) {
         this.id = id;
+        this.userId = userId;
         this.setName(name);
         this.setRace(race);
         this.setCharacterClass(characterClass);
@@ -32,6 +35,10 @@ export class Character implements HasAttributes {
 
     getId(): string | undefined {
         return this.id;
+    }
+
+    getUserId(): string {
+        return this.userId;
     }
 
     setId(id: string): void {

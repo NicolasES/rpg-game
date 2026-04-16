@@ -22,6 +22,7 @@ export class PrismaCharacterRepository implements CharacterRepository {
             await this.prisma.character.update({
                 where: { id: parseInt(character.getId()!) },
                 data: {
+                    userId:          parseInt(character.getUserId()),
                     name:            character.getName(),
                     raceId:          parseInt(character.getRace().getId()!),
                     characterClassId: parseInt(character.getCharacterClass().getId()!),
@@ -32,6 +33,7 @@ export class PrismaCharacterRepository implements CharacterRepository {
         } else {
             const created = await this.prisma.character.create({
                 data: {
+                    userId:          parseInt(character.getUserId()),
                     name:            character.getName(),
                     raceId:          parseInt(character.getRace().getId()!),
                     characterClassId: parseInt(character.getCharacterClass().getId()!),
@@ -57,6 +59,7 @@ export class PrismaCharacterRepository implements CharacterRepository {
 
         return new Character({
             id: row.id.toString(),
+            userId: row.userId.toString(),
             name: row.name,
             experience: row.experience,
             attributes: {
