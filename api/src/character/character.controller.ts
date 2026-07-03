@@ -2,19 +2,26 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { CreateCharacter, type CreateCharacterInput } from './application/use-cases/CreateCharacter';
 import { ListRaces } from './application/use-cases/ListRaces';
 import { ListClasses } from './application/use-cases/ListClasses';
+import { ListCharacters } from './application/use-cases/ListCharacters';
 import { ShowInitialWeapons } from '@/item/application/use-cases/ShowInitialWeapons';
 import { AuthGuard } from '@/shared/infrastructure/auth/AuthGuard';
 import { CurrentUser } from '@/shared/infrastructure/auth/CurrentUser.decorator';
 
-@Controller('character')
+@Controller('characters')
 @UseGuards(AuthGuard)
 export class CharacterController {
     constructor(
         private readonly createCharacter: CreateCharacter,
         private readonly listRaces: ListRaces,
         private readonly listClasses: ListClasses,
-        private readonly showInitialWeapons: ShowInitialWeapons
-    ) {}
+        private readonly showInitialWeapons: ShowInitialWeapons,
+        private readonly listCharacters: ListCharacters
+    ) { }
+
+    @Get()
+    async getCharacters(@CurrentUser() user: { id: string }) {
+        return this.listCharacters.execute(user.id.toString());
+    }
 
     @Get('creation-data')
     async getCreationData() {

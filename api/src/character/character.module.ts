@@ -4,6 +4,7 @@ import { CharacterController } from './character.controller';
 import { CreateCharacter } from './application/use-cases/CreateCharacter';
 import { ListRaces } from './application/use-cases/ListRaces';
 import { ListClasses } from './application/use-cases/ListClasses';
+import { ListCharacters } from './application/use-cases/ListCharacters';
 import { PrismaCharacterRepository } from './infrastructure/repositories/PrismaCharacterRepository';
 import { PrismaRaceRepository } from './infrastructure/repositories/PrismaRaceRepository';
 import { PrismaCharacterClassRepository } from './infrastructure/repositories/PrismaCharacterClassRepository';
@@ -16,12 +17,13 @@ import { ItemModule } from '@/item/item.module';
     CreateCharacter,
     ListRaces,
     ListClasses,
-    { provide: 'CharacterRepository',      useClass: PrismaCharacterRepository },
-    { provide: 'RaceRepository',           useClass: PrismaRaceRepository },
+    ListCharacters,
+    { provide: 'CharacterRepository', useClass: PrismaCharacterRepository },
+    { provide: 'RaceRepository', useClass: PrismaRaceRepository },
     { provide: 'CharacterClassRepository', useClass: PrismaCharacterClassRepository },
   ],
   imports: [
-    EquipmentModule, 
+    EquipmentModule,
     ItemModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'secretKey',
@@ -29,4 +31,4 @@ import { ItemModule } from '@/item/item.module';
     }),
   ],
 })
-export class CharacterModule {}
+export class CharacterModule { }
