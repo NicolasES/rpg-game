@@ -13,7 +13,7 @@ function getAuthHeaders(): HeadersInit {
 export class CharacterService {
 
     static async getCreationData(): Promise<CreationData> {
-        const response = await fetch(`${API_URL}/character/creation-data`, {
+        const response = await fetch(`${API_URL}/characters/creation-data`, {
             headers: getAuthHeaders()
         });
         if (!response.ok) {
@@ -23,7 +23,7 @@ export class CharacterService {
     }
 
     static async createCharacter(data: CreateCharacterDto): Promise<void> {
-        const response = await fetch(`${API_URL}/character`, {
+        const response = await fetch(`${API_URL}/characters`, {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify(data)

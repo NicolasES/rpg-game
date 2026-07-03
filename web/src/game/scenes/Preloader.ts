@@ -50,9 +50,9 @@ export class Preloader extends Scene {
     private createGlobalAnimations(): void {
         const classes = ['warrior', 'mage', 'archer'];
         classes.forEach(cls => {
-            if (!this.anims.exists(`idle-${cls}`)) {
+            if (!this.anims.exists(`walk-${cls}`)) {
                 this.anims.create({
-                    key: `idle-${cls}`,
+                    key: `walk-${cls}`,
                     frames: this.anims.generateFrameNumbers(`hero-${cls}`, { start: 0, end: 7 }),
                     frameRate: 8,
                     repeat: -1

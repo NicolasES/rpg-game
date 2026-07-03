@@ -6,7 +6,7 @@ import { CharacterService } from '../services/character.service';
 export class CharacterCreation extends Scene {
     private apiData: CreationData;
     private domInput: GameObjects.DOMElement;
-    
+
     // Character state
     private selectedRaceIndex = -1;
     private selectedClassIndex = -1;
@@ -37,7 +37,7 @@ export class CharacterCreation extends Scene {
         try {
             this.apiData = await CharacterService.getCreationData();
             loadingText.destroy();
-            
+
             this.buildLayout();
         } catch (error) {
             console.error('API Error:', error);
@@ -125,9 +125,9 @@ export class CharacterCreation extends Scene {
         const attrs = ['STR', 'DEX', 'CON', 'MAG'];
         attrs.forEach((attr, idx) => {
             const posY = y + 100 + (idx * 80);
-            
+
             this.add.text(x + 30, posY, attr, { fontFamily: 'monospace', fontSize: '18px', color: '#aaa' });
-            
+
             const btnMinus = this.add.text(x + 160, posY, '[-]', { fontFamily: 'monospace', fontSize: '22px', color: '#ff4444' }).setInteractive({ useHandCursor: true });
             const valText = this.add.text(x + 220, posY, '10', { fontFamily: 'monospace', fontSize: '22px', color: '#fff' }).setOrigin(0.5);
             const btnPlus = this.add.text(x + 260, posY, '[+]', { fontFamily: 'monospace', fontSize: '22px', color: '#44ff44' }).setInteractive({ useHandCursor: true });
@@ -181,13 +181,13 @@ export class CharacterCreation extends Scene {
         // Atualiza Preview do Herói
         if (cls) {
             const className = cls.name.toLowerCase();
-            const key = className.includes('warrior') ? 'warrior' : 
-                        className.includes('mage') ? 'mage' : 
-                        className.includes('archer') ? 'archer' : null;
-            
+            const key = className.includes('warrior') ? 'warrior' :
+                className.includes('mage') ? 'mage' :
+                    className.includes('archer') ? 'archer' : null;
+
             if (key) {
                 this.heroPreview.setVisible(true);
-                this.heroPreview.play(`idle-${key}`, true);
+                this.heroPreview.play(`walk-${key}`, true);
             } else {
                 this.heroPreview.setVisible(false);
             }
@@ -218,9 +218,9 @@ export class CharacterCreation extends Scene {
             const container = this.add.container(x, y);
             const bg = this.add.graphics();
             container.add(bg);
-            
-            const text = this.add.text(btnWidth / 2, btnHeight / 2, item, { 
-                fontFamily: 'monospace', fontSize: '14px', color: '#fff' 
+
+            const text = this.add.text(btnWidth / 2, btnHeight / 2, item, {
+                fontFamily: 'monospace', fontSize: '14px', color: '#fff'
             }).setOrigin(0.5);
             container.add(text);
 
@@ -228,7 +228,7 @@ export class CharacterCreation extends Scene {
             container.add(zone);
 
             zone.on('pointerdown', () => onClick(index));
-            
+
             btns.push(bg);
         });
 
@@ -251,7 +251,7 @@ export class CharacterCreation extends Scene {
 
         const race = this.apiData.races[this.selectedRaceIndex];
         const cls = this.apiData.classes[this.selectedClassIndex];
-        
+
         // Atributos finais (Base da raça + classe + bônus do usuário)
         const finalAttributes: any = {};
         ['STR', 'DEX', 'CON', 'MAG'].forEach(attr => {

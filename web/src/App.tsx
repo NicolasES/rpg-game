@@ -3,11 +3,13 @@ import { IRefPhaserGame, PhaserGame } from './PhaserGame';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
 import { LogOut } from 'lucide-react';
+import { CharacterSelection } from './components/ui/CharacterSelection';
 
 function App() {
     const phaserRef = useRef<IRefPhaserGame | null>(null);
     const [view, setView] = useState<'login' | 'register' | 'game'>('login');
     const [token, setToken] = useState<string | null>(null);
+    const [activeScene, setActiveScene] = useState<string>('');
 
     // Initial load: check if token exists
     useEffect(() => {
@@ -25,7 +27,7 @@ function App() {
     };
 
     const currentScene = (scene: Phaser.Scene) => {
-        // Can add logic here if needed based on scene
+        setActiveScene(scene.scene.key);
     };
 
     if (view === 'login') {
@@ -40,6 +42,10 @@ function App() {
     return (
         <div id="app" className="w-screen h-screen overflow-hidden bg-slate-900 flex items-center justify-center relative">
             <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
+            
+            {/* Camada de UI React - Menu Principal (Seleção de Personagens) */}
+            {activeScene === 'MainMenu' && <CharacterSelection />}
+
             
             <button 
                 onClick={logout}
