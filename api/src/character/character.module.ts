@@ -30,5 +30,6 @@ import { ItemModule } from '@/item/item.module';
       signOptions: { expiresIn: '1d' },
     }),
   ],
+  exports: ['CharacterRepository'],
 })
 export class CharacterModule { }

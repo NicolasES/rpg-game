@@ -29,6 +29,16 @@ services:
       - DATABASE_PASSWORD=root
       - DATABASE_NAME=rpg-game
       - DATABASE_URL=mysql://root:root@mysql:3306/rpg-game
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  redis:
+    image: redis:alpine
+    container_name: rpg-game-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
   mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
@@ -44,3 +54,4 @@ services:
 
 volumes:
   mysql_data:
+  redis_data:

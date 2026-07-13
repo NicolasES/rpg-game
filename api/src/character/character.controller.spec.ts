@@ -4,6 +4,7 @@ import { Attribute } from '@/shared/domain/enums/AttributesEnum';
 import { CreateCharacter, type CreateCharacterInput } from './application/use-cases/CreateCharacter';
 import { ListRaces } from './application/use-cases/ListRaces';
 import { ListClasses } from './application/use-cases/ListClasses';
+import { ListCharacters } from './application/use-cases/ListCharacters';
 import { ShowInitialWeapons } from '@/item/application/use-cases/ShowInitialWeapons';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@/shared/infrastructure/auth/AuthGuard';
@@ -30,6 +31,12 @@ describe('CharacterController', () => {
         },
         {
           provide: ListClasses,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
+        {
+          provide: ListCharacters,
           useValue: {
             execute: jest.fn(),
           },

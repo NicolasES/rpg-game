@@ -7,10 +7,19 @@ import { EquipmentModule } from './equipment/equipment.module';
 import { InfrastructureModule } from './shared/infrastructure/InfrastructureModule';
 import { HuntingAreaModule } from './hunting-area/hunting-area.module';
 import { AccountModule } from './account/account.module';
+import { BattleModule } from './battle/battle.module';
 
 @Module({
-  imports: [InfrastructureModule, CharacterModule, ItemModule, EquipmentModule, HuntingAreaModule, AccountModule],
+  imports: [
+    InfrastructureModule,
+    CharacterModule,
+    ItemModule,
+    EquipmentModule,
+    HuntingAreaModule,
+    AccountModule,
+    BattleModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
