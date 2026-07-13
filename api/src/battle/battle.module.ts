@@ -5,10 +5,13 @@ import { StartBattle } from './application/use-cases/StartBattle';
 import { BattleController } from './battle.controller';
 import { CharacterModule } from '../character/character.module';
 import { CharacterModuleCombatantProvider } from './infrastructure/providers/CharacterModuleCombatantProvider';
+import { MonsterModule } from '@/monster/monster.module';
+import { MonsterModuleMonsterProvider } from './infrastructure/providers/MonsterModuleMonsterProvider';
 
 @Module({
     imports: [
         CharacterModule,
+        MonsterModule,
         JwtModule.register({
             secret: process.env.JWT_SECRET || 'secretKey',
             signOptions: { expiresIn: '1d' },
@@ -23,6 +26,10 @@ import { CharacterModuleCombatantProvider } from './infrastructure/providers/Cha
         {
             provide: 'HeroProvider',
             useClass: CharacterModuleCombatantProvider,
+        },
+        {
+            provide: 'MonsterProvider',
+            useClass: MonsterModuleMonsterProvider,
         },
         StartBattle
     ],

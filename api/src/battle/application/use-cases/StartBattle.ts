@@ -1,23 +1,23 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { BattleRepository } from '../../domain/repositories/BattleRepository';
 import type { HeroProvider } from '../providers/HeroProvider';
+import type { MonsterProvider } from '../providers/MonsterProvider';
 import { Battle, BattleStateProps } from '../../domain/entities/Battle';
 import { Hero } from '../../domain/entities/Hero';
-import { Attribute } from '@/shared/domain/enums/AttributesEnum';
 import { randomUUID } from 'crypto';
-import { Monster } from '@/battle/domain/entities/Monster';
 
 type StartBattleInput = {
     userId: string;
     characterIds: string[];
-    // huntingAreaLevelId: string;
+    huntingAreaLevelId: string;
 };
 
 @Injectable()
 export class StartBattle {
     constructor(
         @Inject('BattleRepository') private readonly battleRepository: BattleRepository,
-        @Inject('HeroProvider') private readonly heroProvider: HeroProvider
+        @Inject('HeroProvider') private readonly heroProvider: HeroProvider,
+        @Inject('MonsterProvider') private readonly monsterProvider: MonsterProvider
     ) { }
 
     async execute(input: StartBattleInput): Promise<Battle> {
@@ -25,20 +25,12 @@ export class StartBattle {
         if (party.length === 0 || party.length !== input.characterIds.length) {
             throw new Error("One or more characters were not found or do not belong to the user.");
         }
-        // TODO - MOCK
-        const enemies: Monster[] = [
-            new Monster({
-                id: randomUUID(),
-                name: 'Goblin',
-                hp: 30,
-                maxHp: 30,
-                attributes: {
-                    [Attribute.STRENGTH]: 5,
-                    [Attribute.CONSTITUTION]: 2,
-                    [Attribute.DEXTERITY]: 10
-                },
-            })
-        ];
+
+        const enemies = await this.monsterProvider.generateEncounter(input.huntingAreaLevelId);
+        if (enemies.length === 0) {
+            throw new Error("No monsters found for this hunting area level.");
+        }
+
         const battleState: BattleStateProps = {
             id: randomUUID(),
             party,

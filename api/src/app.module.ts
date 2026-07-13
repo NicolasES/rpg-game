@@ -8,6 +8,7 @@ import { InfrastructureModule } from './shared/infrastructure/InfrastructureModu
 import { HuntingAreaModule } from './hunting-area/hunting-area.module';
 import { AccountModule } from './account/account.module';
 import { BattleModule } from './battle/battle.module';
+import { MonsterModule } from './monster/monster.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { BattleModule } from './battle/battle.module';
     EquipmentModule,
     HuntingAreaModule,
     AccountModule,
-    BattleModule
+    BattleModule,
+    MonsterModule
   ],
   controllers: [AppController],
   providers: [AppService],
