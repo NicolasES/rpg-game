@@ -50,4 +50,27 @@ export class PrismaEquipmentRepository implements EquipmentRepository {
 
         return equipment;
     }
+
+    async findByCharacterIds(characterIds: string[]): Promise<Equipment[]> {
+        if (!characterIds.length) return [];
+        
+        const rows = await this.prisma.equipment.findMany({
+            where: { characterId: { in: characterIds.map(id => parseInt(id)) } },
+        });
+
+        return rows.map(row => {
+            const equipment = new Equipment({
+                id:          row.id.toString(),
+                characterId: row.characterId.toString(),
+            });
+
+            if (row.mainHandId) equipment.equip(EquipmentSlot.MAIN_HAND, row.mainHandId.toString());
+            if (row.offHandId)  equipment.equip(EquipmentSlot.OFF_HAND,  row.offHandId.toString());
+            if (row.armorId)    equipment.equip(EquipmentSlot.ARMOR,    row.armorId.toString());
+            if (row.ringId)     equipment.equip(EquipmentSlot.RING,     row.ringId.toString());
+            if (row.legsId)     equipment.equip(EquipmentSlot.LEGS,     row.legsId.toString());
+
+            return equipment;
+        });
+    }
 }

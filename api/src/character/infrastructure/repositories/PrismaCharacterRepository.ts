@@ -91,6 +91,51 @@ export class PrismaCharacterRepository implements CharacterRepository {
         });
     }
 
+    async findByIds(ids: string[]): Promise<Character[]> {
+        if (!ids.length) return [];
+        
+        const rows = await this.prisma.character.findMany({
+            where: { id: { in: ids.map(id => parseInt(id)) } },
+            include: {
+                race: true,
+                characterClass: true,
+            },
+        });
+
+        return rows.map(row => new Character({
+            id: row.id.toString(),
+            userId: row.userId.toString(),
+            name: row.name,
+            experience: row.experience,
+            attributes: {
+                [Attribute.STRENGTH]: row.strength,
+                [Attribute.DEXTERITY]: row.dexterity,
+                [Attribute.CONSTITUTION]: row.constitution,
+                [Attribute.MAGIC]: row.magic,
+            },
+            race: new Race({
+                id: row.race.id.toString(),
+                name: row.race.name,
+                attributes: {
+                    [Attribute.STRENGTH]: row.race.strength,
+                    [Attribute.DEXTERITY]: row.race.dexterity,
+                    [Attribute.CONSTITUTION]: row.race.constitution,
+                    [Attribute.MAGIC]: row.race.magic,
+                },
+            }),
+            characterClass: new CharacterClass({
+                id: row.characterClass.id.toString(),
+                name: row.characterClass.name,
+                attributes: {
+                    [Attribute.STRENGTH]: row.characterClass.strength,
+                    [Attribute.DEXTERITY]: row.characterClass.dexterity,
+                    [Attribute.CONSTITUTION]: row.characterClass.constitution,
+                    [Attribute.MAGIC]: row.characterClass.magic,
+                },
+            }),
+        }));
+    }
+
     async findByUserId(userId: string): Promise<Character[]> {
         const rows = await this.prisma.character.findMany({
             where: { userId: parseInt(userId) },

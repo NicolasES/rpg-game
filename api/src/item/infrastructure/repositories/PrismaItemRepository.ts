@@ -20,6 +20,17 @@ export class PrismaItemRepository implements ItemRepository {
         return this.mapToWeapon(item);
     }
 
+    async findByIds(ids: string[]): Promise<Weapon[]> {
+        if (!ids.length) return [];
+        
+        const items = await this.prisma.item.findMany({
+            where: { id: { in: ids.map(id => parseInt(id)) } },
+            include: { type: true, damages: true }
+        });
+
+        return items.map(item => this.mapToWeapon(item));
+    }
+
     async getInitialWeapons(): Promise<Weapon[]> {
         const items = await this.prisma.item.findMany({
             include: { type: true, damages: true },

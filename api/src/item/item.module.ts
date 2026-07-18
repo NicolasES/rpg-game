@@ -7,6 +7,6 @@ import { ShowInitialWeapons } from './application/use-cases/ShowInitialWeapons';
         ShowInitialWeapons,
         { provide: 'ItemRepository', useClass: PrismaItemRepository },
     ],
-    exports: [ShowInitialWeapons],
+    exports: [ShowInitialWeapons, 'ItemRepository'],
 })
 export class ItemModule {}

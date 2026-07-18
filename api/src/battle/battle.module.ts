@@ -7,11 +7,15 @@ import { CharacterModule } from '../character/character.module';
 import { CharacterModuleCombatantProvider } from './infrastructure/providers/CharacterModuleCombatantProvider';
 import { MonsterModule } from '@/monster/monster.module';
 import { MonsterModuleMonsterProvider } from './infrastructure/providers/MonsterModuleMonsterProvider';
+import { EquipmentModule } from '@/equipment/equipment.module';
+import { ItemModule } from '@/item/item.module';
 
 @Module({
     imports: [
         CharacterModule,
         MonsterModule,
+        EquipmentModule,
+        ItemModule,
         JwtModule.register({
             secret: process.env.JWT_SECRET || 'secretKey',
             signOptions: { expiresIn: '1d' },
