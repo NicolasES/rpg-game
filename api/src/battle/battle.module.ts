@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { RedisBattleRepository } from './infrastructure/repositories/RedisBattleRepository';
 import { StartBattle } from './application/use-cases/StartBattle';
+import { ProcessTurn } from './application/use-cases/ProcessTurn';
 import { BattleController } from './battle.controller';
 import { CharacterModule } from '../character/character.module';
 import { CharacterModuleCombatantProvider } from './infrastructure/providers/CharacterModuleCombatantProvider';
@@ -35,8 +36,9 @@ import { ItemModule } from '@/item/item.module';
             provide: 'MonsterProvider',
             useClass: MonsterModuleMonsterProvider,
         },
-        StartBattle
+        StartBattle,
+        ProcessTurn
     ],
-    exports: [StartBattle]
+    exports: [StartBattle, ProcessTurn]
 })
 export class BattleModule {}

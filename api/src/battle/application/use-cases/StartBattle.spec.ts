@@ -62,6 +62,7 @@ describe('StartBattle Use Case', () => {
         expect(battleRepository.save).toHaveBeenCalledWith(expect.any(Battle));
         
         expect(battle.getParty()).toHaveLength(1);
+        expect(battle.getUserId()).toBe('user1');
         expect(battle.getEnemies()).toHaveLength(1);
         expect(battle.getEnemies()[0].getName()).toBe('Goblin');
         expect(battle.getStatus()).toBe('ACTIVE');

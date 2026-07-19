@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import * as crypto from 'crypto';
 import { MonsterProvider } from '../../application/providers/MonsterProvider';
 import type { MonsterRepository } from '@/monster/domain/repositories/MonsterRepository';
 import { Monster } from '../../domain/entities/Monster';
@@ -25,7 +26,7 @@ export class MonsterModuleMonsterProvider implements MonsterProvider {
             const m = monsters[randomIndex];
 
             enemies.push(new Monster({
-                id: m.getId()!,
+                id: crypto.randomUUID(),
                 name: m.getName(),
                 hp: m.getHp(),
                 maxHp: m.getHp(),

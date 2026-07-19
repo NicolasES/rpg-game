@@ -33,6 +33,7 @@ export class StartBattle {
 
         const battleState: BattleStateProps = {
             id: randomUUID(),
+            userId: input.userId,
             party,
             enemies: enemies,
             turn: 1,
